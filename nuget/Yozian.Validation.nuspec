@@ -9,10 +9,10 @@
     <projectUrl>https://github.com/yozian/Yozian.Validation</projectUrl>
     <iconUrl>https://no_icon_url_here</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>fluent validation</description>
+    <description>fluent strong type validation</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright Ⓒ yozian 2019</copyright>
-    <tags>fluent, validation</tags>
+    <tags>fluent, validation, stron type</tags>
     <dependencies>
       <dependency id="Yozian.Extension" version="2.0.1" />
     </dependencies>
