@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Yozian.Validation</id>
+    <version>0.0.0</version>
+    <authors>yozian</authors>
+    <owners>yozian</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/yozian/Yozian.Validation</projectUrl>
+    <iconUrl>https://no_icon_url_here</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>fluent validation</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright Ⓒ yozian 2019</copyright>
+    <tags>fluent, validation</tags>
+    <dependencies>
+      <dependency id="Yozian.Extension" version="2.0.1" />
+    </dependencies>
+    <repository type="git" commit="" url="https://github.com/yozian/Yozian.Validation"></repository>
+  </metadata>
+</package>
