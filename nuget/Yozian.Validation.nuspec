@@ -14,7 +14,7 @@
     <copyright>Copyright Ⓒ yozian 2019</copyright>
     <tags>fluent, validation, stron type</tags>
     <dependencies>
-      <dependency id="Yozian.Extension" version="2.0.1" />
+      <dependency id="Yozian.Extension" version="2.*" />
     </dependencies>
     <repository type="git" commit="" url="https://github.com/yozian/Yozian.Validation"></repository>
   </metadata>
