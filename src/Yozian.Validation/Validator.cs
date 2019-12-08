@@ -14,6 +14,8 @@ namespace Yozian.Validation
         private readonly IList<string> errorMsgs = new List<string>();
 
 
+        #region NotAllowed
+
         public Validator<T> NotAllowedFor(bool matchCondition, string errorMsg)
         {
             this.addErrorsWhen(matchCondition, errorMsg);
@@ -26,6 +28,36 @@ namespace Yozian.Validation
             return this;
         }
 
+        public Validator<T> NotAllowedForWhen(bool validateWhen, bool matchCondition, string errorMsg)
+        {
+            if (!validateWhen)
+            {
+                return this;
+            }
+
+            this.addErrorsWhen(matchCondition, errorMsg);
+            return this;
+        }
+
+        public Validator<T> NotAllowedForWhen(Func<T, bool> validateWhen, Func<T, bool> matchCondition, string errorMsg)
+        {
+            if (!validateWhen(this.model))
+            {
+                return this;
+            }
+
+            this.addErrorsWhen(matchCondition(model), errorMsg);
+            return this;
+        }
+
+
+
+
+        #endregion
+
+
+        #region OnlyAccept
+
         public Validator<T> OnlyAcceptFor(Func<T, bool> matchCondition, string errorMsg)
         {
             this.addErrorsWhen(!matchCondition(model), errorMsg);
@@ -37,6 +69,30 @@ namespace Yozian.Validation
             this.addErrorsWhen(!matchCondition, errorMsg);
             return this;
         }
+
+        public Validator<T> OnlyAcceptForWhen(Func<T, bool> validateWhen, Func<T, bool> matchCondition, string errorMsg)
+        {
+            if (!validateWhen(this.model))
+            {
+                return this;
+            }
+
+            this.addErrorsWhen(!matchCondition(model), errorMsg);
+            return this;
+        }
+
+        public Validator<T> OnlyAcceptForWhen(bool validateWhen, bool matchCondition, string errorMsg)
+        {
+            if (!validateWhen)
+            {
+                return this;
+            }
+
+            this.addErrorsWhen(!matchCondition, errorMsg);
+            return this;
+        }
+
+        #endregion
 
         private void addErrorsWhen(bool condition, string errorMsg)
         {
