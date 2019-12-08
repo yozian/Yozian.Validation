@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Yozian.Validation.Test.TestMaterial;
@@ -61,7 +62,7 @@ namespace Yozian.Validation.Test
         }
 
         [Test]
-        public void Test_FluentValidation()
+        public void Test_AggregateValidation()
         {
             Assert.Throws<AggregateValidationException>(() =>
             {
@@ -73,7 +74,7 @@ namespace Yozian.Validation.Test
                        .OnlyAcceptFor(x => x.SerialNo.Length.Equals(10), "SerialNo length should be 10")
                        .NotNullOrEmpty(x => x.Name)
                        .GreaterThan(x => x.Id, 0, null, "{0} should be bigger!")
-                       .ThrowErrorIfPresents();
+                       .ThrowAllErrorsIfPresents();
 
                     // or throw all erros
                     // .ThrowAllErrorsIfPresents();
@@ -88,10 +89,63 @@ namespace Yozian.Validation.Test
                 catch (AggregateValidationException ex)
                 {
                     Assert.AreEqual(2, ex.ValidationErrors.Count());
-                    throw;
+                    throw ex;
                 }
 
             });
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void Test_NullModelEntry()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                Book book = null;
+                Validation
+                    .Entry(book)
+                    .NotAllowedForWhen(x => x.Id < 0, x => x.Id == -1, "ID IS NOT CORRECT!")
+                    .ThrowErrorIfPresents();
+            });
+
+            Assert.Pass();
+        }
+
+
+        [Test]
+        public void Test_ConditionalValidation()
+        {
+            // do
+            Validation
+                .Entry(book)
+                .OnlyAcceptForWhen(x => x.Id < 0, x => x.Id == -1, "ID IS NOT CORRECT!")
+                .ThrowErrorIfPresents();
+
+
+            // skip validation
+            Validation
+                 .Entry(book)
+                 .OnlyAcceptForWhen(x => x.Id > 0, x => x.Id != -1, "ID IS NOT CORRECT!")
+                 .ThrowErrorIfPresents();
+
+
+            Assert.Throws<ValidationException>(() =>
+            {
+                Validation
+                    .Entry(book)
+                    .NotAllowedForWhen(x => x.Id < 0, x => x.Id == -1, "ID IS NOT CORRECT!")
+                    .ThrowErrorIfPresents();
+            });
+
+
+            // skip validation
+
+            Validation
+                .Entry(book)
+                .NotAllowedForWhen(x => x.Id > 0, x => x.Id == -1, "ID IS NOT CORRECT!")
+                .ThrowErrorIfPresents();
+
 
             Assert.Pass();
         }
