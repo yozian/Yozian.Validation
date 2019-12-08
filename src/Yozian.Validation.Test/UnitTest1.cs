@@ -74,7 +74,14 @@ namespace Yozian.Validation.Test
                        .OnlyAcceptFor(x => x.SerialNo.Length.Equals(10), "SerialNo length should be 10")
                        .NotNullOrEmpty(x => x.Name)
                        .GreaterThan(x => x.Id, 0, null, "{0} should be bigger!")
+                       // conditional validation (this wont process because id is less than 0)
+                       .OnlyAcceptForWhen(x => x.Id > 0, x => !string.IsNullOrEmpty(x.Name), "Name should not be empty!")
+                       // conditional validation (this would process because id is less than 0)
+                       .NotAllowedForWhen(x => x.Id < 0, x => x.Id == -1, "Id should not be negative")
                        .ThrowAllErrorsIfPresents();
+
+                    // or get first error
+                    // .GetFirstError()
 
                     // or throw all erros
                     // .ThrowAllErrorsIfPresents();
@@ -88,7 +95,12 @@ namespace Yozian.Validation.Test
                 }
                 catch (AggregateValidationException ex)
                 {
-                    Assert.AreEqual(2, ex.ValidationErrors.Count());
+                    // ex.Message
+                    // SerialNo length should be 10
+                    // Id should be bigger!
+                    // Id should not be negative
+
+                    Assert.AreEqual(3, ex.ValidationErrors.Count());
                     throw ex;
                 }
 
